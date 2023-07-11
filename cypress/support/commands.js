@@ -23,3 +23,20 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (email, password) => {
+    cy.request({
+        url: 'https://practice.expandtesting.com/notes/api/users/login',
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body:{
+            "email": 'toto@example.com',
+            "password": '123456789'
+        }
+    }).then(res => {
+        Cypress.env('token', res.body.data.token);
+    }).its('status').should('eq', 200);
+})
